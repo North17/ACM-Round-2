@@ -1,0 +1,227 @@
+create table book_store (bid char(2) primary key, title varchar(25), author varchar(15), publisher varchar(15), yop int, price int, noc int);
+create table sales (bid char(2) primary key, copies_sold int, date_sold date);
+
+insert into book_store values('A1', 'ABC of C++', 'Guruswamy', 'Dhanpat Rai', 1998, 250, 3);
+insert into book_store values('A2', 'Basics of C++', 'Vinayagam', 'BPO', 1995, 195, 5);
+insert into book_store values('B1', 'Operating System', 'Harish', 'Tata McG', 1990, 350, 1);
+insert into book_store values('C1', 'God of Small Things', 'Arunthati Rai', 'BPO', 2000, 500, 2);
+insert into book_store values('D1', 'Chemistry in Daily Life', 'Acharya', 'Tata McG', 1985, 220, 3);
+
+select * from book_store;
++-----+-------------------------+---------------+-------------+------+-------+------+
+| bid | title                   | author        | publisher   | yop  | price | noc  |
++-----+-------------------------+---------------+-------------+------+-------+------+
+| A1  | ABC of C++              | Guruswamy     | Dhanpat Rai | 1998 |   250 |    3 |
+| A2  | Basics of C++           | Vinayagam     | BPO         | 1995 |   195 |    5 |
+| B1  | Operating System        | Harish        | Tata McG    | 1990 |   350 |    1 |
+| C1  | God of Small Things     | Arunthati Rai | BPO         | 2000 |   500 |    2 |
+| D1  | Chemistry in Daily Life | Acharya       | Tata McG    | 1985 |   220 |    3 |
++-----+-------------------------+---------------+-------------+------+-------+------+
+5 rows in set (0.00 sec)
+
+insert into sales values('A1', 12, '2005-06-12');
+insert into sales values('B1', 5, '2005-01-01');
+insert into sales values('C1', 10, '2004-01-12');
+
+select * from sales;
++-----+-------------+------------+
+| bid | copies_sold | date_sold  |
++-----+-------------+------------+
+| A1  |          12 | 2005-06-12 |
+| B1  |           5 | 2005-01-01 |
+| C1  |          10 | 2004-01-12 |
++-----+-------------+------------+
+3 rows in set (0.00 sec)
+
+
+1.
+select * from book_store where price>230 order by yop;
++-----+---------------------+---------------+-------------+------+-------+------+
+| bid | title               | author        | publisher   | yop  | price | noc  |
++-----+---------------------+---------------+-------------+------+-------+------+
+| B1  | Operating System    | Harish        | Tata McG    | 1990 |   350 |    1 |
+| A1  | ABC of C++          | Guruswamy     | Dhanpat Rai | 1998 |   250 |    3 |
+| C1  | God of Small Things | Arunthati Rai | BPO         | 2000 |   500 |    2 |
++-----+---------------------+---------------+-------------+------+-------+------+
+3 rows in set (0.01 sec)
+
+
+
+2.
+update book_store set noc=5 where title= "ABC of C++";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+3.
+update book_store set price= 0.935*price;
+Query OK, 5 rows affected (0.01 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+select * from book_store;
++-----+-------------------------+---------------+-------------+------+-------+------+
+| bid | title                   | author        | publisher   | yop  | price | noc  |
++-----+-------------------------+---------------+-------------+------+-------+------+
+| A1  | ABC of C++              | Guruswamy     | Dhanpat Rai | 1998 |   234 |    5 |
+| A2  | Basics of C++           | Vinayagam     | BPO         | 1995 |   182 |    5 |
+| B1  | Operating System        | Harish        | Tata McG    | 1990 |   327 |    1 |
+| C1  | God of Small Things     | Arunthati Rai | BPO         | 2000 |   468 |    2 |
+| D1  | Chemistry in Daily Life | Acharya       | Tata McG    | 1985 |   206 |    3 |
++-----+-------------------------+---------------+-------------+------+-------+------+
+5 rows in set (0.00 sec)
+
+
+
+4.
+delete from book_store where yop<1990;
+Query OK, 1 row affected (0.00 sec)
+select * from book_store;
++-----+---------------------+---------------+-------------+------+-------+------+
+| bid | title               | author        | publisher   | yop  | price | noc  |
++-----+---------------------+---------------+-------------+------+-------+------+
+| A1  | ABC of C++          | Guruswamy     | Dhanpat Rai | 1998 |   234 |    5 |
+| A2  | Basics of C++       | Vinayagam     | BPO         | 1995 |   182 |    5 |
+| B1  | Operating System    | Harish        | Tata McG    | 1990 |   327 |    1 |
+| C1  | God of Small Things | Arunthati Rai | BPO         | 2000 |   468 |    2 |
++-----+---------------------+---------------+-------------+------+-------+------+
+4 rows in set (0.00 sec)
+
+
+
+5.
+select publisher, noc from book_store where publisher = "Tata McG" order by publisher;
++-----------+------+
+| publisher | noc  |
++-----------+------+
+| Tata McG  |    1 |
++-----------+------+
+1 row in set (0.00 sec)
+
+
+
+6.
+alter table book_store add category varchar(20) default "text book";
+Query OK, 4 rows affected (0.03 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+7.
+select publisher, count(*) from book_store group by publisher having count(*) > 1;
++-----------+----------+
+| publisher | count(*) |
++-----------+----------+
+| BPO       |        2 |
++-----------+----------+
+1 row in set (0.00 sec)
+
+
+
+8.
+select book_store.bid, title from book_store, sales where book_store.bid = sales.bid and month(date_sold) = 1 and year(date_sold) = 2005;
++-----+------------------+
+| bid | title            |
++-----+------------------+
+| B1  | Operating System |
++-----+------------------+
+1 row in set (0.01 sec)
+
+
+
+9.
+select book_store.bid, title, copies_sold from book_store, sales where book_store.bid = sales.bid;
++-----+---------------------+-------------+
+| bid | title               | copies_sold |
++-----+---------------------+-------------+
+| A1  | ABC of C++          |          12 |
+| B1  | Operating System    |           5 |
+| C1  | God of Small Things |          10 |
++-----+---------------------+-------------+
+3 rows in set (0.00 sec) 
+
+
+
+
+10.
+select title, author, publisher from book_store, sales where book_store.bid = sales.bid and copies_sold>= 8;
++---------------------+---------------+-------------+
+| title               | author        | publisher   |
++---------------------+---------------+-------------+
+| ABC of C++          | Guruswamy     | Dhanpat Rai |
+| God of Small Things | Arunthati Rai | BPO         |
++---------------------+---------------+-------------+
+2 rows in set (0.00 sec)
+
+
+
+
+11.
+select publisher, avg(price) from book_store group by publisher having publisher= 'BPO';
++-----------+------------+
+| publisher | avg(price) |
++-----------+------------+
+| BPO       |   325.0000 |
++-----------+------------+
+1 row in set (0.00 sec)
+
+
+
+
+12.
+select * from book_store where author like "A%";
++-----+---------------------+---------------+-----------+------+-------+------+-----------+
+| bid | title               | author        | publisher | yop  | price | noc  | category  |
++-----+---------------------+---------------+-----------+------+-------+------+-----------+
+| C1  | God of Small Things | Arunthati Rai | BPO       | 2000 |   468 |    2 | text book |
++-----+---------------------+---------------+-----------+------+-------+------+-----------+
+1 row in set (0.00 sec)
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

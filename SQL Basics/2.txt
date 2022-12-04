@@ -1,0 +1,195 @@
+use classxii;
+
+create table Movie (no int, title varchar(30), type varchar(15), rating varchar(5), stars varchar(20), qty int, price float(5,2));
+
+desc Movie;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| no     | int(11)     | YES  |     | NULL    |       |
+| title  | varchar(30) | YES  |     | NULL    |       |
+| type   | varchar(15) | YES  |     | NULL    |       |
+| rating | varchar(5)  | YES  |     | NULL    |       |
+| stars  | varchar(20) | YES  |     | NULL    |       |
+| qty    | int(11)     | YES  |     | NULL    |       |
+| price  | float(5,2)  | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+
+insert into Movie values(1, "Gone with the Wind", "Drama", "G", "Gable", 4, 50);
+insert into Movie values(2, "Friday the 13th", "Horror", "R", "Jason", 2, 60);
+insert into Movie values(3, "Top Gun", "Drama", "PG", "Cruise", 7, 40.5);
+insert into Movie values(4, "Splash", "Comedy", "PG13", "Hanks", 3, 29);
+insert into Movie values(5, "Risky Business", "Comedy", "R", "Cruise", 2, 44.5);
+insert into Movie values(6, "Crocodile Tears", "Comedy", "PG13", "Harris", 2, 60);
+insert into Movie values(7, "Tootsie", "Comedy", "PG", "Hoffman", 1, 20);
+insert into Movie values(8, "Fast and Furious", "Thriller", "PG", "Vin Diesel", 3, 69.5);
+insert into Movie values(9, "It", "Horror", "PG13", "Jaeden", 5, 58);
+
+
+
+1.
+select sum(qty) from movie;
++----------+
+| sum(qty) |
++----------+
+|       29 |
++----------+
+
+
+2.
+select * from movie where price>58;
++------+------------------+----------+--------+------------+------+-------+
+| no   | title            | type     | rating | stars      | qty  | price |
++------+------------------+----------+--------+------------+------+-------+
+|    2 | Friday the 13th  | Horror   | R      | Jason      |    2 | 60.00 |
+|    6 | Crocodile Tears  | Comedy   | PG13   | Harris     |    2 | 60.00 |
+|    8 | Fast and Furious | Thriller | PG     | Vin Diesel |    3 | 69.50 |
++------+------------------+----------+--------+------------+------+-------+
+3 rows in set (0.01 sec)
+
+
+
+3.
+select * from movie where qty >= 2 and rating= "PG" order by qty;
++------+------------------+----------+--------+------------+------+-------+
+| no   | title            | type     | rating | stars      | qty  | price |
++------+------------------+----------+--------+------------+------+-------+
+|    8 | Fast and Furious | Thriller | PG     | Vin Diesel |    3 | 69.50 |
+|    3 | Top Gun          | Drama    | PG     | Cruise     |    7 | 40.50 |
++------+------------------+----------+--------+------------+------+-------+
+2 rows in set (0.01 sec)
+
+
+
+
+4.
+select no, price as "Current Value", 1.15*price as "Replacement Value" from movie;
++------+---------------+-------------------+
+| no   | Current Value | Replacement Value |
++------+---------------+-------------------+
+|    1 |         50.00 |             57.50 |
+|    2 |         60.00 |             69.00 |
+|    3 |         40.50 |             46.57 |
+|    4 |         29.00 |             33.35 |
+|    5 |         44.50 |             51.17 |
+|    6 |         60.00 |             69.00 |
+|    7 |         20.00 |             23.00 |
+|    8 |         69.50 |             79.92 |
+|    9 |         58.00 |             66.70 |
++------+---------------+-------------------+
+9 rows in set (0.01 sec)
+
+
+
+5.
+select count(*) from movie where not rating = "G";
++----------+
+| count(*) |
++----------+
+|        8 |
++----------+
+1 row in set (0.00 sec)
+
+
+
+6.
+select type, count(*) from movie group by type;
++----------+----------+
+| type     | count(*) |
++----------+----------+
+| Comedy   |        4 |
+| Drama    |        2 |
+| Horror   |        2 |
+| Thriller |        1 |
++----------+----------+
+4 rows in set (0.01 sec)
+
+
+7.
+update movie set stars = "Smith" where Title= "Splash";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+8.
+select type,max(price), min(price) from movie group by type;
++----------+------------+------------+
+| type     | max(price) | min(price) |
++----------+------------+------------+
+| Comedy   |      60.00 |      20.00 |
+| Drama    |      50.00 |      40.50 |
+| Horror   |      60.00 |      58.00 |
+| Thriller |      69.50 |      69.50 |
++----------+------------+------------+
+4 rows in set (0.00 sec)
+
+
+9.
+select title, "is a", type from movie where title not like "% %";
++---------+------+--------+
+| title   | is a | type   |
++---------+------+--------+
+| Splash  | is a | Comedy |
+| Tootsie | is a | Comedy |
+| It      | is a | Horror |
++---------+------+--------+
+3 rows in set (0.00 sec)
+
+
+
+
+10.
+alter table movie add (Director varchar(10));
+Query OK, 9 rows affected (0.07 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+
+desc movie;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| no       | int(11)     | YES  |     | NULL    |       |
+| title    | varchar(30) | YES  |     | NULL    |       |
+| type     | varchar(15) | YES  |     | NULL    |       |
+| rating   | varchar(5)  | YES  |     | NULL    |       |
+| stars    | varchar(20) | YES  |     | NULL    |       |
+| qty      | int(11)     | YES  |     | NULL    |       |
+| price    | float(5,2)  | YES  |     | NULL    |       |
+| Director | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

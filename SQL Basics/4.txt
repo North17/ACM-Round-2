@@ -1,0 +1,201 @@
+create table sports_master(description varchar(15), event_cod int primary key, no_in_team int, event_date date, category varchar(15));
+desc sports_master;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| description | varchar(15) | YES  |     | NULL    |       |
+| event_cod   | int(11)     | NO   | PRI | NULL    |       |
+| no_in_team  | int(11)     | YES  |     | NULL    |       |
+| event_date  | date        | YES  |     | NULL    |       |
+| category    | varchar(15) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+
+insert into sports_master values("100 mts run", 1001, 1, '2001-01-01', "Sub Junior");
+insert into sports_master values("volleyball", 1002, 9, '2001-01-04', "Senior");
+insert into sports_master values("cricket", 1003, 11, '2001-01-02', "Junior"); 
+insert into sports_master values("shot put", 1004, 1, '2001-01-01', "Junior");
+insert into sports_master values("basketball", 1005, 5, '2001-01-02', "Sub Junior");
+insert into sports_master values("javelin", 1006, 1, '2001-01-01', "Junior");
+
+select * from sports_master;
++-------------+-----------+------------+------------+------------+
+| description | event_cod | no_in_team | event_date | category   |
++-------------+-----------+------------+------------+------------+
+| 100 mts run |      1001 |          1 | 2001-01-01 | Sub Junior |
+| volleyball  |      1002 |          9 | 2001-01-04 | Senior     |
+| cricket     |      1003 |         11 | 2001-01-02 | Junior     |
+| shot put    |      1004 |          1 | 2001-01-01 | Junior     |
+| basketball  |      1005 |          5 | 2001-01-02 | Sub Junior |
+| javelin     |      1006 |          1 | 2001-01-01 | Junior     |
++-------------+-----------+------------+------------+------------+
+6 rows in set (0.02 sec)
+
+
+
+
+
+create table stu_sports(admno int primary key, event_cod int, position int);
+desc stu_sports;
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| admno     | int(11) | NO   | PRI | NULL    |       |
+| event_cod | int(11) | YES  |     | NULL    |       |
+| position  | int(11) | YES  |     | NULL    |       |
++-----------+---------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+insert into stu_sports values(1236, 1001, 1);
+insert into stu_sports values(1237, 1002, 2);
+insert into stu_sports values(1250, 1003, 3);
+insert into stu_sports values(1241, 1004, 1);
+insert into stu_sports values(1235, 1006, 1);
+
+select * from stu_sports;
++-------+-----------+----------+
+| admno | event_cod | position |
++-------+-----------+----------+
+|  1235 |      1006 |        1 |
+|  1236 |      1001 |        1 |
+|  1237 |      1002 |        2 |
+|  1241 |      1004 |        1 |
+|  1250 |      1003 |        3 |
++-------+-----------+----------+
+5 rows in set (0.00 sec)
+
+
+1.
+select count(*) from sports_master where category = 'Junior' and event_date = '2001-01-01';
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.01 sec)
+
+
+2.
+select stu_sports.admno, sports_master.event_cod, event_date from sports_master, stu_sports 
+where sports_master.event_cod = stu_sports.event_cod 
+and category = 'Junior' order by event_cod desc;
++-------+-----------+------------+
+| admno | event_cod | event_date |
++-------+-----------+------------+
+|  1235 |      1006 | 2001-01-01 |
+|  1241 |      1004 | 2001-01-01 |
+|  1250 |      1003 | 2001-01-02 |
++-------+-----------+------------+
+
+
+3.
+select category, count(*) from sports_master group by category;
++------------+----------+
+| category   | count(*) |
++------------+----------+
+| Junior     |        3 |
+| Senior     |        1 |
+| Sub Junior |        2 |
++------------+----------+
+3 rows in set (0.06 sec)
+
+
+
+4.
+update sports_master set description = "200 mts run" where description = "100 mts run";
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+5.
+select admno, sports_master.event_cod, description from stu_sports, sports_master where sports_master.event_cod = stu_sports.event_cod and event_date in ('2001-01-01','2001-01-02');
++-------+-----------+-------------+
+| admno | event_cod | description |
++-------+-----------+-------------+
+|  1235 |      1006 | javelin     |
+|  1236 |      1001 | 200 mts run |
+|  1241 |      1004 | shot put    |
+|  1250 |      1003 | cricket     |
++-------+-----------+-------------+
+4 rows in set (0.01 sec)
+
+
+6.
+select category, sum(no_in_team) as "no of students" from sports_master group by category;
++------------+----------------+
+| category   | no of students |
++------------+----------------+
+| Junior     |             13 |
+| Senior     |              9 |
+| Sub Junior |              6 |
++------------+----------------+
+3 rows in set (0.01 sec)
+
+
+
+7.
+select admno, sports_master.event_cod, category from sports_master, stu_sports where sports_master.event_cod = stu_sports.event_cod and position = 1;
++-------+-----------+------------+
+| admno | event_cod | category   |
++-------+-----------+------------+
+|  1235 |      1006 | Junior     |
+|  1236 |      1001 | Sub Junior |
+|  1241 |      1004 | Junior     |
++-------+-----------+------------+
+3 rows in set (0.01 sec)
+
+
+
+8.
+select category, max(no_in_team) from sports_master group by category;
++------------+-----------------+
+| category   | max(no_in_team) |
++------------+-----------------+
+| Junior     |              11 |
+| Senior     |               9 |
+| Sub Junior |               5 |
++------------+-----------------+
+3 rows in set (0.01 sec)
+
+
+9.
+select description from sports_master where category in ("Junior", "Senior");
++-------------+
+| description |
++-------------+
+| volleyball  |
+| cricket     |
+| shot put    |
+| javelin     |
++-------------+
+4 rows in set (0.00 sec)
+
+
+
+10.
+alter table stu_sports drop position;
+Query OK, 5 rows affected (0.07 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

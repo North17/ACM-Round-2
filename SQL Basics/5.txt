@@ -1,0 +1,213 @@
+create table stationery (s_id char(4), StationeryName varchar(10), Company char(3), price int);
+Query OK, 0 rows affected (0.09 sec)
+
+desc stationery;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| s_id           | char(4)     | YES  |     | NULL    |       |
+| StationeryName | varchar(10) | YES  |     | NULL    |       |
+| Company        | char(3)     | YES  |     | NULL    |       |
+| price          | int(11)     | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+insert into stationery values("DP01", "Dot Pen", "ABC", 10);
+insert into stationery values("PL02", "Pencil", "XYZ", 6);
+insert into stationery values("PL01", "Pencil", "CAM", 5);
+insert into stationery values("GP02", "Gel Pen", "ABC", 15);
+
+select * from stationery;
++------+----------------+---------+-------+
+| s_id | StationeryName | Company | price |
++------+----------------+---------+-------+
+| DP01 | Dot Pen        | ABC     |    10 |
+| PL02 | Pencil         | XYZ     |     6 |
+| PL01 | Pencil         | CAM     |     5 |
+| GP02 | Gel Pen        | ABC     |    15 |
++------+----------------+---------+-------+
+4 rows in set (0.00 sec)
+
+
+
+create table consumer (c_id int, ConsumerName varchar(15), Address varchar(10), s_id char(4));
+Query OK, 0 rows affected (0.01 sec)
+
+desc consumer;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| c_id         | int(11)     | YES  |     | NULL    |       |
+| ConsumerName | varchar(15) | YES  |     | NULL    |       |
+| Address      | varchar(10) | YES  |     | NULL    |       |
+| s_id         | char(4)     | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+insert into consumer values(1, "Good Learner", "Delhi", "PL01");
+insert into consumer values(6, "Write Well", "Mumbai", "GP02");
+insert into consumer values(12, "Topper", "Delhi", "DP01");
+insert into consumer values(15, "Write & Draw", "Delhi", "PL02");
+insert into consumer values(16, "Motivation", "Bangalore", "PL01");
+
+select * from consumer;
++------+--------------+-----------+------+
+| c_id | ConsumerName | Address   | s_id |
++------+--------------+-----------+------+
+|    1 | Good Learner | Delhi     | PL01 |
+|    6 | Write Well   | Mumbai    | GP02 |
+|   12 | Topper       | Delhi     | DP01 |
+|   15 | Write & Draw | Delhi     | PL02 |
+|   16 | Motivation   | Bangalore | PL01 |
++------+--------------+-----------+------+
+5 rows in set (0.00 sec)
+
+1.
+select * from consumer where address= "Delhi";
++------+--------------+---------+------+
+| c_id | ConsumerName | Address | s_id |
++------+--------------+---------+------+
+|    1 | Good Learner | Delhi   | PL01 |
+|   12 | Topper       | Delhi   | DP01 |
+|   15 | Write & Draw | Delhi   | PL02 |
++------+--------------+---------+------+
+3 rows in set (0.00 sec)
+
+
+2.
+select * from stationery where price between 8 and 15;
++------+----------------+---------+-------+
+| s_id | StationeryName | Company | price |
++------+----------------+---------+-------+
+| DP01 | Dot Pen        | ABC     |    10 |
+| GP02 | Gel Pen        | ABC     |    15 |
++------+----------------+---------+-------+
+3 rows in set (0.00 sec)
+
+
+3.
+select consumername, address, company, price from consumer, stationery where consumer.s_id = stationery.s_id;
++--------------+-----------+---------+-------+
+| consumername | address   | company | price |
++--------------+-----------+---------+-------+
+| Good Learner | Delhi     | CAM     |     7 |
+| Write Well   | Mumbai    | ABC     |    15 |
+| Topper       | Delhi     | ABC     |    10 |
+| Write & Draw | Delhi     | XYZ     |     8 |
+| Motivation   | Bangalore | CAM     |     7 |
++--------------+-----------+---------+-------+
+5 rows in set (0.00 sec)
+
+
+4.
+update stationery set price = price + 2 where price < 10;
+Query OK, 2 rows affected (0.04 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+select * from stationery;
++------+----------------+---------+-------+
+| s_id | StationeryName | Company | price |
++------+----------------+---------+-------+
+| DP01 | Dot Pen        | ABC     |    10 |
+| PL02 | Pencil         | XYZ     |     8 |
+| PL01 | Pencil         | CAM     |     7 |
+| GP02 | Gel Pen        | ABC     |    15 |
++------+----------------+---------+-------+
+4 rows in set (0.00 sec)
+
+
+5.
+select address, count(*) from consumer group by address;
++-----------+----------+
+| address   | count(*) |
++-----------+----------+
+| Bangalore |        1 |
+| Delhi     |        3 |
+| Mumbai    |        1 |
++-----------+----------+
+3 rows in set (0.00 sec)
+
+
+6.
+select company from stationery, consumer where stationery.s_id = consumer.s_id and not address = "Delhi";
++---------+
+| company |
++---------+
+| ABC     |
+| CAM     |
++---------+
+2 rows in set (0.00 sec)
+
+
+7.
+select company, consumername from stationery, consumer where stationery.s_id = consumer.s_id order by price;
++---------+--------------+
+| company | consumername |
++---------+--------------+
+| CAM     | Good Learner |
+| CAM     | Motivation   |
+| XYZ     | Write & Draw |
+| ABC     | Topper       |
+| ABC     | Write Well   |
++---------+--------------+
+5 rows in set (0.01 sec)
+
+
+8.
+select stationeryname from stationery where price > 10 and company = "ABC";
++----------------+
+| stationeryname |
++----------------+
+| Gel Pen        |
++----------------+
+1 row in set (0.00 sec)
+
+
+
+9.
+select consumername, stationeryname from stationery, consumer where stationery.s_id = consumer.s_id and consumername like "%r";
++--------------+----------------+
+| consumername | stationeryname |
++--------------+----------------+
+| Good Learner | Pencil         |
+| Topper       | Dot Pen        |
++--------------+----------------+
+2 rows in set (0.00 sec)
+
+
+10.
+select address from consumer group by address;
++-----------+
+| address   |
++-----------+
+| Bangalore |
+| Delhi     |
+| Mumbai    |
++-----------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

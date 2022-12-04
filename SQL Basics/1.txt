@@ -1,0 +1,178 @@
+create database ClassXII;
+use ClassXII;
+
+create table Hospital (No integer primary key, Name varchar(20), Age integer, Department varchar(20), DateofAd date, Charges integer, Gender char(1));
+
+insert into Hospital values(1, "Karan", 24, "Surgery", '2021-02-23', 300, "M");
+
+# more inserts not needed
+insert into Hospital values(2, "Divakar", 24, "Orthopaedic", '2021-01-20', 200, "M");
+insert into Hospital values(3, "Divya", 45, "Orthopaedic", '2021-02-19', 200, "F");
+insert into Hospital values(4, "Arun", 12, "Surgery", '2021-01-01', 300, "M");
+insert into Hospital values(5, "Sabina", 36, "ENT", '2021-02-24', 250, "F");
+insert into Hospital values(6, "John", 16, "ENT", '2021-02-24', 300, "M");
+insert into Hospital values(7, "Robert", 29, "Cardiology", '2021-02-20', 800, "M");
+insert into Hospital values(8, "Rubina", 45, "Gynaecology", '2021-02-22', 300, "F");
+insert into Hospital values(9, "Vikas", 19, "Cardiology", '2021-01-13', 800, "M");
+insert into Hospital values(10, "Mohan", 31, "Nuclear Medicine", '2021-02-19', 400, "M");
+
+mysql> select * from hospital;
++----+---------+------+------------------+------------+---------+--------+
+| No | Name    | Age  | Department       | DateofAd   | Charges | Gender |
++----+---------+------+------------------+------------+---------+--------+
+|  1 | Karan   |   24 | Surgery          | 2021-02-23 |     300 | M      |
+|  2 | Divakar |   24 | Orthopaedic      | 2021-01-20 |     200 | M      |
+|  3 | Divya   |   45 | Orthopaedic      | 2021-02-19 |     200 | F      |
+|  4 | Arun    |   12 | Surgery          | 2021-01-01 |     300 | M      |
+|  5 | Sabina  |   36 | ENT              | 2021-02-24 |     250 | F      |
+|  6 | John    |   16 | ENT              | 2021-02-24 |     300 | M      |
+|  7 | Robert  |   29 | Cardiology       | 2021-02-20 |     800 | M      |
+|  8 | Rubina  |   45 | Gynaecology      | 2021-02-22 |     300 | F      |
+|  9 | Vikas   |   19 | Cardiology       | 2021-01-13 |     800 | M      |
+| 10 | Mohan   |   31 | Nuclear Medicine | 2021-02-19 |     400 | M      |
++----+---------+------+------------------+------------+---------+--------+
+10 rows in set (0.01 sec)
+
+
+1.
+select * from Hospital where Gender= "F" and Department= "Orthopaedic";
++----+-------+------+-------------+------------+---------+--------+
+| No | Name  | Age  | Department  | DateofAd   | Charges | Gender |
++----+-------+------+-------------+------------+---------+--------+
+|  3 | Divya |   45 | Orthopaedic | 2021-02-19 |     200 | F      |
++----+-------+------+-------------+------------+---------+--------+
+1 row in set (0.01 sec)
+
+2.
+select Name, DateofAd from Hospital order by DateofAd desc;
++---------+------------+
+| Name    | DateofAd   |
++---------+------------+
+| John    | 2021-02-24 |
+| Sabina  | 2021-02-24 |
+| Karan   | 2021-02-23 |
+| Rubina  | 2021-02-22 |
+| Robert  | 2021-02-20 |
+| Divya   | 2021-02-19 |
+| Mohan   | 2021-02-19 |
+| Divakar | 2021-01-20 |
+| Vikas   | 2021-01-13 |
+| Arun    | 2021-01-01 |
++---------+------------+
+10 rows in set (0.01 sec)
+
+
+3.
+select * from Hospital where Age>30 and Gender="M";
++----+-------+------+------------------+------------+---------+--------+
+| No | Name  | Age  | Department       | DateofAd   | charges | Gender |
++----+-------+------+------------------+------------+---------+--------+
+| 10 | Mohan |   31 | Nuclear Medicine | 2021-02-19 |  400.00 | M      |
++----+-------+------+------------------+------------+---------+--------+
+1 row in set (0.10 sec)
+
+
+4.
+update hospital
+set charges = (130/100)*charges where Department= "Surgery";
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+5.
+select Gender,count(*) from Hospital group by Gender;
++--------+----------+
+| Gender | count(*) |
++--------+----------+
+| F      |        3 |
+| M      |        7 |
++--------+----------+
+2 rows in set (0.02 sec)
+
+
+
+6.
+select Department, sum(charges) from Hospital group by Department;
++------------------+--------------+
+| Department       | sum(charges) |
++------------------+--------------+
+| Cardiology       |         1600 |
+| ENT              |          550 |
+| Gynaecology      |          300 |
+| Nuclear Medicine |          400 |
+| Orthopaedic      |          400 |
+| Surgery          |          780 |
++------------------+--------------+
+6 rows in set (0.01 sec)
+
+
+7.
+select department, avg(charges)from Hospital group by Department having avg(charges) > 200;
++------------------+--------------+
+| department       | avg(charges) |
++------------------+--------------+
+| Cardiology       |     800.0000 |
+| ENT              |     275.0000 |
+| Gynaecology      |     300.0000 |
+| Nuclear Medicine |     400.0000 |
+| Surgery          |     390.0000 |
++------------------+--------------+
+5 rows in set (0.00 sec)
+
+
+8.
+alter table hospital
+modify charges float(8,2);
+Query OK, 10 rows affected (0.07 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc hospital;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| No         | int(11)     | NO   | PRI | NULL    |       |
+| Name       | varchar(20) | YES  |     | NULL    |       |
+| Age        | int(11)     | YES  |     | NULL    |       |
+| Department | varchar(20) | YES  |     | NULL    |       |
+| DateofAd   | date        | YES  |     | NULL    |       |
+| charges    | float(8,2)  | YES  |     | NULL    |       |
+| Gender     | char(1)     | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+
+
+9.
+select max(charges), min(charges) from hospital;
++--------------+--------------+
+| max(charges) | min(charges) |
++--------------+--------------+
+|       800.00 |       200.00 |
++--------------+--------------+
+1 row in set (0.00 sec)
+
+
+
+10.
+select name, age, department from hospital where name like "%a%";
++---------+------+------------------+
+| name    | age  | department       |
++---------+------+------------------+
+| Karan   |   24 | Surgery          |
+| Divakar |   24 | Orthopaedic      |
+| Divya   |   45 | Orthopaedic      |
+| Arun    |   12 | Surgery          |
+| Sabina  |   36 | ENT              |
+| Rubina  |   45 | Gynaecology      |
+| Vikas   |   19 | Cardiology       |
+| Mohan   |   31 | Nuclear Medicine |
++---------+------+------------------+
+8 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
