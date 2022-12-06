@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="This is the description">
+    <title>Learning CSS</title>
+</head>
+
+<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+
+
+<style>
+
+    body{
+        background-color: lightblue
+    }
+
+    [type='radio']{
+        margin: 20px;
+        padding: 5px;
+    }
+
+    [type='checkbox']{
+        margin: 10px,0px,15px,0px;
+    }
+
+    /* # for id */
+    /* ids get higher priority than classes */
+    #heading{
+        color: green;
+    }
+
+    .silver-background{
+        background-color: silver;
+    }
+
+    .thick-green-border{
+        border-color: green;
+        border-width:10px;
+        border-style:solid;
+        /* border-radius: 10px; */
+        border-radius: 50%;
+    }
+
+    .smaller-image{
+        width:100px
+    }
+
+    .red-text{
+        color: red;
+        font-size: 30px;
+    }
+
+    p{
+        font-size: 16px;
+        font-family: monospace;
+    }
+
+    /* <Give multiple fonts to give font degradation order */
+
+    h2{
+        font-family: Lobster, 'Open Sans'; 
+    }
+
+</style>
+
+
+
+<h2 class="red-text" id="heading">CatPhotoApp</h2>
+
+<p>Click here to view more <a href="#">cat photos</a>.</p>
+
+<a href="#"><img class="small-image thick-green-border" src="https://bit.ly/fcc-relaxing-cat" alt="A cute orange cat lying on its back"></a>
+
+<div class="silver-background">
+    <p>Things cats love:</p>
+    <ul>
+        <li>Cat nip</li>
+        <li>Laser pointers</li>
+        <li>Lasagna</li>
+    </ul>
+    <p>Top three things cats hate:</p>
+    <ol>
+        <li>Flea treatment</li>
+        <li>Thunder</li>
+        <li>other cats</li>
+    </ol>
+</div>
+
+<div class="form">
+    <br>
+    <label><input type="radio" name="button"> This is the first radio button</label>
+    <br>
+    <label><input type="radio" name="button"> This is the second radio button</label>
+    <br>
+    <label><input type="checkbox"> This is the first checkbox</label>
+    <br>
+    <label><input type="checkbox"> This is the second checkbox</label>
+
+
+
+</div>

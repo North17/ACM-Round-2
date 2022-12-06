@@ -1,0 +1,52 @@
+<style>
+
+    body{
+        font-family: sans-serif
+    }
+
+    .headbox{background-color:indigo; grid-area: header}
+    .adbox{background-color:orange; grid-area: advert}
+    .conbox{background-color:turquoise; grid-area: content}
+    .footbox{background-color:pink; grid-area: footer}
+
+    .container{
+        font-size: 1.5em;
+        min-height: 300px;
+        width:100%;
+        background:lightgray;
+        display:grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 50px auto 1fr auto;
+        grid-gap: 10px;
+        grid-template-areas: 
+            "header"
+            "advert"
+            "content"
+            "footer";
+        
+    }
+
+
+    /* Media Query */
+    
+    @media(min-width: 800px){
+        .container{
+            grid-template-columns: auto 1fr;
+            grid-template-rows: auto 1fr auto;
+            grid-template-areas: 
+                "advert header"
+                "advert content"
+                "advert footer";
+        }
+    }
+
+
+
+</style>
+
+<div class="container">
+    <div class="headbox">header</div>
+    <div class="adbox">advert</div>
+    <div class="conbox">content</div>
+    <div class="footbox">footer</div>
+</div>

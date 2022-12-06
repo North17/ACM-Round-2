@@ -1,0 +1,51 @@
+<style>
+
+    /* container for all variables */
+    .root{
+        --penguin-belly:pink;
+    }
+    
+
+    .penguin{
+        --penguin-skin: gray;
+        /* penguin skin can be used by all classes below it */
+        --penguin-belly:white;
+        /* we change var just for this class */
+    }
+
+    .penguin-top{
+
+        background-color: var(--penguin-skin, gray); 
+        /* use var to use a varibale and have a fallback value */
+    }
+
+
+
+
+    body{
+        background-color: black;
+        color: green;
+        font-family: monospace;
+    }
+
+    .pink-text{
+        color: pink;
+    }
+
+    .orange-text{
+        color: orange !important;
+    }
+    /* important makes it so that it has highest priority */
+
+    .blue-text{
+        color: blue;
+    }
+
+    
+
+
+</style>
+
+<h1 class="pink-text blue-text">Hello World</h1>
+<!-- Order doesn't matter down here, it depends on order in which style is declared in -->
+<h1 class="pink-text blue-text orange-text">Hello World 2</h1>

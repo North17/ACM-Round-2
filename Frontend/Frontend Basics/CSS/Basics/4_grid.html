@@ -1,0 +1,46 @@
+<style>
+    .d1{background: lightskyblue;}
+    .d2{background: lightsalmon;}
+    .d3{background: paleturquoise;}
+    .d4{background: lightpink;}
+
+
+    .d5{
+        background: lightgreen;
+        grid-column: 2/4;
+        /* The numbers indicate the column border lines */
+
+        /* grid-area: footer; */
+        grid-area: 3/1/4/4
+        /* first 2 numbers are start coords, second 2 are end coords (row/col) */
+    }
+
+    .container{
+        font-size: 40px;
+        width:100%;
+        background:lightgray;
+
+        display:grid;
+
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+        grid-template-rows: 2fr 2fr;
+        /* grid-column-gap: 5px;
+        grid-row-gap: 5px; */
+
+        grid-gap: 10px 20px;
+        /* row, column */
+
+        grid-template-areas: 
+        "header header header"
+        ". content content"
+        "footer footer footer";
+    }
+</style>
+
+<div class="container">
+    <div class="d1">1</div>
+    <div class="d2">2</div>
+    <div class="d3">3</div>
+    <div class="d4">4</div>
+    <div class="d5">5</div>
+</div>

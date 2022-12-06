@@ -1,0 +1,33 @@
+<style>
+
+    #boxcontainer{
+        height: 500px;
+        background-color: gray;
+        display: flex;
+        /* flex-direction: row-reverse; */
+        /* flex-direction: column; */
+        justify-content: center;
+    }
+
+    #box1{
+        background-color: dodgerblue;
+        order: 2;
+        width: 25%;
+        height: 100%;
+        flex-grow: 1;
+    }
+
+    #box2{
+        background-color: orangered;
+        order: 1;
+        width: 25%;
+        height:100%;
+        flex-grow: 2;
+    }
+
+</style>
+
+<div id="boxcontainer">
+    <div id="box1"></div>
+    <div id="box2"></div>
+</div>
